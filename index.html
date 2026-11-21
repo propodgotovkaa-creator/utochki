@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Утиная рыбалка · Солнечный парк</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f8f5e9;color:#173e3b;font:17px/1.48 "Trebuchet MS",Arial,sans-serif}header,main{max-width:1440px;margin:auto}header{display:flex;align-items:center;gap:10px;padding:24px 4vw;border-bottom:1px solid #dedccf;font-weight:bold;letter-spacing:.02em}header span{color:#bc5427;font-size:30px;line-height:1}main{display:grid;grid-template-columns:minmax(260px,1fr) minmax(0,2.15fr);align-items:center;gap:3vw;padding:5vh 4vw}h1{font-family:Georgia,serif;font-weight:normal;letter-spacing:-.065em;font-size:clamp(46px,5.5vw,84px);line-height:.94;margin:0 0 28px}h2{font-size:1.22rem;margin:0 0 12px}p{margin:0 0 15px}label,strong{font-weight:bold}label{display:block;font-size:15px;margin-top:22px}input,button{font:inherit}input{width:100%;border:1px solid #a4b6a8;background:white;border-radius:10px;padding:11px;margin:5px 0 14px}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:4px solid #ad4c16;outline-offset:3px}.primary{background:#15594c;border:0;color:white;padding:13px 22px;border-radius:12px;font-weight:bold}.board{background:#fffdf6;border-radius:24px;padding:10px;box-shadow:0 12px 38px #49391d20}.scene{position:relative;aspect-ratio:3/2;overflow:hidden;border-radius:17px;background:#55adb7 url(park.jpg) center/100% 100%}canvas{width:100%;height:100%;position:absolute;inset:0;pointer-events:none}.duck{border:0;background:transparent;position:absolute;width:11%;aspect-ratio:1;transform:translate(-50%,-90%);padding:0;touch-action:manipulation}.duck:disabled{cursor:default}.duck img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 3px 2px #14494a66)}.duck:before{content:'';position:absolute;bottom:0;left:-8%;width:116%;height:16%;border:1.5px solid #dcfffac9;border-radius:50%;box-shadow:0 2px 5px #0b697a66}.duck:enabled:hover img,.duck:focus-visible img{filter:drop-shadow(0 0 5px #fff)}.score{display:flex;justify-content:space-between;padding:15px 8px 5px;gap:10px;flex-wrap:wrap}.score b{font-variant-numeric:tabular-nums}.points{display:inline-block;background:#e5ecdf;border-radius:8px;padding:2px 9px}.turn{font-size:.9rem;color:#556660}.chain{display:block;overflow-wrap:anywhere;font: bold 1.5rem Georgia,serif;margin:8px 0 18px;color:#944619}.reward{position:absolute;z-index:20;left:50%;top:31%;transform:translate(-50%,-50%);border-radius:50px;background:#fff4ba;padding:5px 18px;font-weight:bold;color:#76400c;pointer-events:none}.reward:before{content:'';position:absolute;height:120px;width:2px;background:#645337;bottom:100%;left:50%}[hidden]{display:none!important}@media(max-width:800px){header{padding:12px 5vw}main{display:flex;flex-direction:column;align-items:stretch;padding:18px 4vw;gap:18px}h1{font-size:46px;margin-bottom:14px}.board{order:0}aside{order:1}body:has(#setup:not([hidden])) aside{order:-1}p{margin-bottom:8px}.score{font-size:15px}.duck{min-width:34px}}
+</style>
+<header><span aria-hidden="true">☀</span> Солнечный парк</header>
+<main><aside><h1>Утиная рыбалка</h1><form id="setup"><h2>Правила игры</h2><p>Педагог задаёт цепочку слогов. Перед каждым броском произнеси её вслух, затем нажми на уточку.</p><p>Ребёнок и педагог ловят по очереди. За уточку — от 1 до 10 очков. У каждого пять попыток. Побеждает тот, кто наберёт больше очков.</p><label for="syllables">Цепочка слогов</label><input id="syllables" maxlength="90" placeholder="Например, ша — шо — шу"><button class="primary">Начать игру</button></form>
+<section id="play" hidden aria-live="polite"><p class="turn" id="round"></p><h2 id="title"></h2><p id="prompt"></p><strong class="chain" id="chain"></strong><button id="next" class="primary"></button></section></aside>
+<div class="board"><div class="scene" id="scene"><canvas id="water"></canvas><span id="reward" class="reward" hidden></span></div><div class="score"><span>Ребёнок <b class="points" id="child">0</b></span><span>Педагог <b class="points" id="adult">0</b></span></div></div></main>
+<script>
+const el=id=>document.getElementById(id),scene=el('scene'),canvas=el('water'),ctx=canvas.getContext('2d');
+const park=new Image();park.src='park.jpg';
+const duckSrc='duck.png', ducks=[], splashes=[], scores=[0,0];
+let phase='setup',turn=0,clock=0,previous=0,values=[],spoken='';
+const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+function draw(now){
+  const dt=Math.min((now-previous)/1000,.05);previous=now;if(!reduced.matches)clock+=dt;
+  const w=Math.max(1,Math.round(scene.clientWidth)),h=Math.max(1,Math.round(scene.clientHeight));
+  if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h}
+  ctx.clearRect(0,0,w,h);
+  if(park.naturalWidth&&!reduced.matches){
+    ctx.save();ctx.beginPath();ctx.ellipse(w*.5,h*.565,w*.485,h*.246,0,0,Math.PI*2);ctx.clip();
+    for(let y=Math.floor(h*.316);y<h*.815;y+=3){
+      const wave=Math.sin(y*.072+clock*1.45)+.6*Math.sin(y*.047-clock*.9);
+      ctx.drawImage(park,0,(y+wave*.8)*park.height/h,park.width,3*park.height/h,wave*1.8,y,w,3.3);
+    }ctx.restore();
+  }
+  ducks.forEach((d,i)=>{
+    const a=i*Math.PI/5+clock*.16,x=.5+.385*Math.cos(a),y=.59+.166*Math.sin(a);
+    d.style.left=x*100+'%';d.style.top=(y+.003*Math.sin(clock*2+i))*100+'%';d.style.width=(9+2.1*Math.sin(a))+'%';d.style.zIndex=String(Math.round(y*20));d.firstChild.style.transform='scaleX('+(Math.sin(a)>0?-1:1)+')';
+  });
+  for(let i=splashes.length-1;i>=0;i--){const s=splashes[i],age=(now-s.time)/1000;if(age>=1.5){splashes.splice(i,1);continue}ctx.strokeStyle='rgba(238,255,255,'+(1-age/1.5)+')';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(w*s.x,h*s.y,4+w*.07*age,2+h*.035*age,0,0,Math.PI*2);ctx.stroke()}
+  requestAnimationFrame(draw);
+}
+function enable(active){ducks.forEach(d=>d.disabled=!active)}
+function tally(){el('child').textContent=scores[0];el('adult').textContent=scores[1]}
+function showTurn(){phase='speak';enable(false);el('reward').hidden=true;el('round').textContent='Круг '+(Math.floor(turn/2)+1)+' из 5';el('title').textContent=turn%2?'Ход педагога':'Ход ребёнка';el('prompt').textContent=spoken?'Произнеси цепочку вслух.':'Произнеси цепочку, которую задал педагог.';el('chain').textContent=spoken;el('next').textContent='Слоги произнесены';el('next').hidden=false}
+function catchDuck(i){
+  if(phase!=='fish'||ducks[i].hidden)return;
+  const d=ducks[i],point=values[i];phase='caught';enable(false);
+  splashes.push({x:parseFloat(d.style.left)/100,y:parseFloat(d.style.top)/100,time:performance.now()});
+  d.hidden=true;scores[turn%2]+=point;turn++;tally();el('reward').textContent='+'+point;el('reward').hidden=false;
+  el('chain').textContent='';el('title').textContent='Уточка поймана!';el('prompt').textContent='Очки за улов: '+point;el('next').textContent=turn===10?'Узнать результат':'Передать ход';el('next').hidden=false;el('next').focus({preventScroll:true});
+}
+for(let i=0;i<10;i++){const b=document.createElement('button'),img=new Image();img.src=duckSrc;img.alt='';b.className='duck';b.disabled=true;b.setAttribute('aria-label','Поймать уточку '+(i+1));b.append(img);b.onclick=()=>catchDuck(i);scene.append(b);ducks.push(b)}
+el('setup').onsubmit=e=>{e.preventDefault();turn=0;scores.fill(0);tally();spoken=el('syllables').value.trim();values=ducks.map(()=>1+Math.floor(Math.random()*10));ducks.forEach(d=>d.hidden=false);el('setup').hidden=true;el('play').hidden=false;showTurn();el('next').focus({preventScroll:true})};
+el('next').onclick=()=>{
+  if(phase==='speak'){phase='fish';el('prompt').textContent='Выбери уточку и нажми на неё.';el('next').hidden=true;enable(true);ducks.find(d=>!d.hidden)?.focus({preventScroll:true});return}
+  if(phase==='caught'&&turn<10){showTurn();return}
+  if(phase==='caught'){phase='end';el('reward').hidden=true;el('round').textContent='Игра окончена';el('title').textContent=scores[0]===scores[1]?'Ничья!':scores[0]>scores[1]?'Победил ребёнок!':'Победил педагог!';el('prompt').textContent='Ребёнок — '+scores[0]+' · Педагог — '+scores[1];el('next').textContent='Сыграть ещё';return}
+  if(phase==='end'){phase='setup';el('play').hidden=true;el('setup').hidden=false;scores.fill(0);tally();ducks.forEach(d=>d.hidden=false);el('syllables').focus()}
+};
+requestAnimationFrame(draw);
+</script></html>
