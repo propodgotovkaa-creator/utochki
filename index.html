@@ -4,28 +4,48 @@
 #scene{position:fixed;inset:0;overflow:hidden;background:#75bfcc url(park.jpg) center/cover}.layer{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}#rig{z-index:40}
 .duck{position:absolute;border:0;background:transparent;padding:0;aspect-ratio:230/216;transform:translate(-50%,-100%);touch-action:manipulation}.duck:before{content:'';position:absolute;left:0;right:0;bottom:0;height:15%;border:1.6px solid #cefffcaa;border-radius:50%;box-shadow:0 2px 5px #125e6655}.duck.lift:before{display:none}.duck img{width:100%;display:block;filter:drop-shadow(0 3px 2px #134b4a55)}.duck:disabled{cursor:default}.duck:enabled:hover img{filter:drop-shadow(0 0 6px white)}
 #overlay{position:fixed;inset:0;z-index:80;display:grid;place-items:center;background:#193c452d;overflow:auto;padding:16px}.card{margin:auto;width:min(430px,100%);background:#fff9e9;border:3px solid #fff;border-radius:26px;box-shadow:0 12px 55px #132f4370;padding:clamp(20px,4vmin,36px);position:relative;overflow:hidden}.card:before{content:'';position:absolute;inset:0 0 auto;height:10px;background:repeating-linear-gradient(105deg,#f3ac36 0 22px,#fff1c9 22px 44px)}h1,h2{font-family:Georgia,serif;margin:.25em 0;line-height:1.05}h1{font-size:clamp(38px,6vmin,56px);letter-spacing:-.045em}p{margin:14px 0}label{display:block;font-weight:bold;font-size:15px}input{width:100%;background:#fffdf8;border:1px solid #a9b7a8;border-radius:10px;padding:10px;margin:5px 0 15px}.primary{width:100%;background:#185c50;border:0;border-radius:12px;color:white;padding:12px;font-weight:bold}
-#hud{position:fixed;z-index:45;inset:max(12px,env(safe-area-inset-top)) 12px auto;pointer-events:none;display:flex;gap:8px;justify-content:space-between;align-items:flex-start}.chip,#message,.expand{background:#fff8e9f5;border:2px solid #fff;color:#203f41;border-radius:16px;box-shadow:0 3px 12px #15373530}.chip{padding:8px 13px;font-size:clamp(14px,2.1vmin,19px)}#title{font-weight:bold;border-left:7px solid #f5a82d}#hud[data-player="1"] #title{border-left-color:#348caf}.scores{font-variant-numeric:tabular-nums;display:flex;gap:10px}.scores b{margin-left:3px}.expand{pointer-events:auto;font-size:20px;padding:4px 10px}.right{display:flex;gap:6px;align-items:center}#message{position:fixed;z-index:46;bottom:max(12px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);max-width:min(90%,730px);width:max-content;text-align:center;padding:7px 16px;font-size:clamp(14px,2.3vmin,20px);overflow-wrap:anywhere}#reward{position:absolute;z-index:42;transform:translate(-50%,-100%);font:bold clamp(24px,4vmin,44px) Georgia,serif;color:#713609;background:#ffdf6f;border:3px solid white;border-radius:40px;padding:1px 15px;box-shadow:0 4px 14px #5c432044;pointer-events:none}@media(max-width:520px){#hud{inset-inline:7px}.chip{padding:6px 8px}.scores{gap:4px;flex-direction:column}.expand{padding:3px 7px}}
+#hud{position:fixed;z-index:45;inset:max(14px,env(safe-area-inset-top)) 14px auto;display:flex;justify-content:space-between;align-items:flex-start;gap:8px;pointer-events:none}
+#title,.scores,#message{border:1px solid #fff1bdba;box-shadow:inset 0 1px 1px #ffffffa6,0 4px 12px #123a4650}
+#title{display:flex;gap:9px;align-items:center;border-radius:7px 20px 20px 7px;padding:9px 16px 9px 11px;background:linear-gradient(#ffefb9,#efc270);color:#503213;font:bold clamp(15px,2.4vmin,22px) Georgia,serif;text-shadow:0 1px #fff3c4}
+#title:before{content:'';width:11px;height:11px;border:2px solid #a8732c;border-radius:50%;background:radial-gradient(circle at 33% 25%,#fffad7,#e6ab35 55%,#89541e);box-shadow:0 1px 1px #fff9de}
+#hud[data-player="1"] #title{background:linear-gradient(#d9f6f4,#81c8cb);color:#13484e;text-shadow:0 1px #e5ffff}
+.scores{display:flex;align-items:stretch;background:linear-gradient(140deg,#174d54df,#082f38d9);backdrop-filter:blur(8px);border-radius:14px;padding:6px 3px;color:#fff8dc}
+.scores span{padding:0 clamp(7px,1.4vw,17px);display:grid;justify-items:center;font-size:clamp(13px,1.65vmin,16px);line-height:1.15}
+.scores span+span{border-left:1px solid #d7e6d073}.scores b{font:bold clamp(24px,4vmin,38px)/1.1 Georgia,serif;font-variant-numeric:lining-nums tabular-nums;color:#ffdb88;text-shadow:0 1px #c28b35,0 2px #835321,0 3px 3px #092329}.scores span+span b{color:#b2eeee;text-shadow:0 1px #68aab4,0 2px #347079,0 3px 3px #092329}
+#message{position:fixed;z-index:46;bottom:max(14px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);width:max-content;max-width:94%;border-radius:30px;padding:7px 19px;text-align:center;background:#123f47de;backdrop-filter:blur(6px);color:#fff5d6;font: bold clamp(15px,2.2vmin,20px)/1.35 Georgia,serif}
+#reward{position:absolute;z-index:42;transform:translate(-50%,-100%);font:bold clamp(24px,4vmin,44px) Georgia,serif;color:#713609;background:#ffdf6f;border:3px solid white;border-radius:40px;padding:1px 15px;box-shadow:0 4px 14px #5c432044;pointer-events:none}.names{display:grid;grid-template-columns:1fr 1fr;gap:12px}.names label{min-width:0}.scores{max-width:56%}.scores span{min-width:0}.scores strong{max-width:16ch;overflow-wrap:anywhere;text-align:center}#title{max-width:43%;overflow-wrap:anywhere;min-width:0}#title:before{flex:none}
 </style></head><body>
 <main id="scene" aria-label="Пруд с уточками"><canvas id="water" class="layer"></canvas><canvas id="rig" class="layer"></canvas><span id="reward" hidden></span></main>
-<div id="hud" hidden><div id="title" class="chip" role="status"></div><div class="right"><div class="chip scores" aria-label="Счёт"><span>Ребёнок <b id="child">0</b></span><span>Педагог <b id="adult">0</b></span></div><button id="full" class="expand" aria-label="На весь экран" title="На весь экран">⛶</button></div></div>
-<div id="message" hidden></div>
-<div id="overlay"><form class="card" id="setup"><h1>Утиная рыбалка</h1><p><b>Правила игры</b></p><p>Педагог задаёт цепочку слогов. В свой ход произнеси её вслух и нажми на уточку. Удочка подцепит её за колечко!</p><p>Ребёнок и педагог ловят по очереди, по пять уточек каждый. За улов дают от 1 до 10 очков. У кого больше очков, тот и победил.</p><label for="syllables">Цепочка слогов</label><input id="syllables" maxlength="90" placeholder="Например, ша — шо — шу"><button class="primary">Начать игру</button></form>
+<div id="hud" hidden><div id="title" role="status"></div><div class="scores" aria-label="Счёт"><span><strong id="firstName"></strong> <b id="child">0</b></span><span><strong id="secondName"></strong> <b id="adult">0</b></span></div></div>
+<div id="message" hidden>Произнеси слоги и поймай уточку</div>
+<div id="overlay"><form class="card" id="setup"><h1>Утиная рыбалка</h1><p><b>Правила игры</b></p><p>Выберите любую цепочку слогов для нужного звука. В свой ход произнеси её вслух и нажми на уточку. Удочка подцепит её за колечко!</p><p>Игроки ловят по очереди, по пять уточек каждый. За улов дают от 1 до 10 очков. У кого больше очков, тот и победил.</p><div class="names"><label>Первый игрок<input id="first" maxlength="24" required placeholder="Аня" autocomplete="off"></label><label>Второй игрок<input id="second" maxlength="24" required placeholder="Саша" autocomplete="off"></label></div><button class="primary">Начать игру</button></form>
 <section class="card" id="result" hidden><h2 id="winner"></h2><p id="total"></p><button id="again" class="primary">Сыграть ещё</button></section></div>
 <script>
 const el=id=>document.getElementById(id),scene=el('scene'),water=el('water'),rig=el('rig'),ctx=water.getContext('2d'),rod=rig.getContext('2d');
 const park=new Image();park.src='park.jpg';
 const ducks=[],scores=[0,0],motion=matchMedia('(prefers-reduced-motion: reduce)');
-let turn=0,phase='intro',clock=0,last=0,chain='',values=[],haul=null;
+let turn=0,phase='intro',clock=0,last=0,values=[],haul=null;
 function fullscreen(){if(!document.fullscreenElement&&scene.ownerDocument.documentElement.requestFullscreen)document.documentElement.requestFullscreen().catch(()=>{});}
-el('full').onclick=()=>document.fullscreenElement?document.exitFullscreen().catch(()=>{}):fullscreen();
-document.addEventListener('fullscreenchange',()=>{const name=document.fullscreenElement?'Выйти из полного экрана':'На весь экран';el('full').ariaLabel=name;el('full').title=name});
-if(!document.fullscreenEnabled)el('full').hidden=true;
 function syncScores(){el('child').textContent=scores[0];el('adult').textContent=scores[1]}
-function nextTurn(){phase='fish';el('hud').dataset.player=turn%2;el('title').textContent=turn%2?'Ход педагога':'Ход ребёнка';el('message').textContent=chain?'Произнеси: '+chain:'Произнеси слоги и поймай уточку';ducks.forEach(d=>d.disabled=d.hidden)}
-function start(){turn=0;haul=null;scores.fill(0);syncScores();chain=el('syllables').value.trim();values=ducks.map(()=>1+Math.floor(Math.random()*10));ducks.forEach(d=>{d.hidden=false;d.classList.remove('lift')});el('overlay').hidden=true;el('hud').hidden=false;el('message').hidden=false;nextTurn()}
-el('setup').onsubmit=e=>{e.preventDefault();fullscreen();start()};el('again').onclick=start;
-function finish(){phase='end';el('message').hidden=true;el('hud').hidden=true;el('setup').hidden=true;el('overlay').hidden=false;el('result').hidden=false;el('winner').textContent=scores[0]===scores[1]?'Ничья!':scores[0]>scores[1]?'Победил ребёнок!':'Победил педагог!';el('total').textContent='Ребёнок — '+scores[0]+' · Педагог — '+scores[1];el('again').focus()}
-function catchDuck(i){if(phase!=='fish'||ducks[i].hidden)return;phase='haul';ducks.forEach(d=>d.disabled=true);const d=ducks[i];haul={i,start:performance.now(),x:parseFloat(d.style.left)/scene.clientWidth,y:parseFloat(d.style.top)/scene.clientHeight,size:parseFloat(d.style.width)/Math.min(scene.clientWidth,scene.clientHeight),side:d.dataset.side,credited:false};el('message').hidden=true}
+function nextTurn(){phase='fish';el('hud').dataset.player=turn%2;el('title').textContent='Сейчас играет '+names[turn%2];ducks.forEach(d=>d.disabled=d.hidden)}
+const arrivals=new Map(),names=[];
+const randomPoints=()=>1+Math.floor(Math.random()*10);
+function start(){turn=0;haul=null;arrivals.clear();scores.fill(0);syncScores();values=ducks.map(randomPoints);ducks.forEach(d=>{d.hidden=false;d.classList.remove('lift')});el('overlay').hidden=true;el('hud').hidden=false;el('message').hidden=false;nextTurn()}
+const fields=[el('first'),el('second')];
+fields.forEach(field=>field.oninput=()=>field.setCustomValidity(''));
+el('setup').onsubmit=e=>{
+  e.preventDefault();
+  for(const field of fields){
+    field.value=field.value.trim();
+    if(!field.value){field.setCustomValidity('Введите имя игрока');field.reportValidity();return}
+  }
+  names.splice(0,2,...fields.map(field=>field.value));
+  el('firstName').textContent=names[0];el('secondName').textContent=names[1];
+  fullscreen();start()
+};
+el('again').onclick=()=>{el('result').hidden=true;el('setup').hidden=false;el('first').focus()};
+function finish(){phase='end';el('message').hidden=true;el('hud').hidden=true;el('setup').hidden=true;el('overlay').hidden=false;el('result').hidden=false;el('winner').textContent=scores[0]===scores[1]?'Ничья!':'Победа! '+names[scores[0]>scores[1]?0:1];el('total').textContent=names[0]+' — '+scores[0]+' · '+names[1]+' — '+scores[1];el('again').focus()}
+function catchDuck(i){if(phase!=='fish'||ducks[i].hidden)return;phase='haul';arrivals.delete(i);ducks[i].style.opacity=1;ducks.forEach(d=>d.disabled=true);const d=ducks[i];haul={i,start:performance.now(),x:parseFloat(d.style.left)/scene.clientWidth,y:parseFloat(d.style.top)/scene.clientHeight,size:parseFloat(d.style.width)/Math.min(scene.clientWidth,scene.clientHeight),side:d.dataset.side,credited:false};el('message').hidden=true}
 for(let i=0;i<10;i++){const d=document.createElement('button'),img=new Image();img.src='duck.png';img.alt='';d.className='duck';d.disabled=true;d.setAttribute('aria-label','Поймать уточку '+(i+1));d.append(img);d.onclick=()=>catchDuck(i);scene.append(d);ducks.push(d)}
 function place(d,x,y,size,side,z){d.style.left=x+'px';d.style.top=y+'px';d.style.width=size+'px';d.style.zIndex=z;d.dataset.side=side;d.firstChild.style.transform='scaleX('+side+')'}
 const smooth=x=>{x=Math.max(0,Math.min(1,x));return x*x*(3-2*x)};
@@ -50,7 +70,12 @@ function animation(now,w,h){
   if(lift>0){const age=elapsed-.48;ctx.strokeStyle='rgba(226,255,255,'+Math.max(0,.9-age*.6)+')';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(x,h*a.y,5+s*.07*age,2+s*.025*age,0,0,2*Math.PI);ctx.stroke()}
   if(elapsed>=1&&!a.credited){a.credited=true;scores[turn%2]+=values[a.i];syncScores();el('reward').textContent='+'+values[a.i];el('reward').hidden=false}
   el('reward').style.left=Math.min(w-38,Math.max(38,x+size*.49))+'px';el('reward').style.top=Math.max(80,y-size*.45)+'px';
-  if(elapsed>=2.15){d.hidden=true;haul=null;turn++;el('reward').hidden=true;el('message').hidden=false;if(turn===10)finish();else nextTurn()}
+  if(elapsed>=2.15){
+    haul=null;turn++;d.classList.remove('lift');el('reward').hidden=true;
+    if(turn===10){d.hidden=true;finish();return}
+    values[a.i]=randomPoints();arrivals.set(a.i,now);
+    el('message').hidden=false;nextTurn();
+  }
 }
 function draw(now){const w=scene.clientWidth,h=scene.clientHeight,s=Math.min(w,h);if(!w||!h){requestAnimationFrame(draw);return}
   clock+=motion.matches?0:Math.min((now-last)/1000,.05);last=now;
@@ -59,8 +84,11 @@ function draw(now){const w=scene.clientWidth,h=scene.clientHeight,s=Math.min(w,h
   const scale=Math.max(w/(park.naturalWidth||3),h/(park.naturalHeight||2)),pw=(park.naturalWidth||3)*scale,ph=(park.naturalHeight||2)*scale,ox=(w-pw)/2,oy=(h-ph)/2;
   if(park.naturalWidth&&!motion.matches){ctx.save();ctx.beginPath();ctx.ellipse(w/2,oy+ph*.565,pw*.484,ph*.245,0,0,Math.PI*2);ctx.clip();
     for(let y=Math.max(0,Math.floor(oy+ph*.316));y<Math.min(h,oy+ph*.815);y+=5){const wave=Math.sin(y*.06+clock*1.5)+.6*Math.sin(y*.04-clock);ctx.drawImage(park,0,(y-oy+wave*.8)/scale,park.width,5/scale,ox+wave*1.8,y,pw,5.3)}ctx.restore()}
-  ducks.forEach((d,i)=>{if(d.hidden||haul?.i===i)return;const a=i*Math.PI/5+clock*.16,depth=Math.sin(a),size=Math.max(38,s*(.123+.022*depth)),x=w*.5+Math.min(pw*.38,w*.5-size*.64)*Math.cos(a),y=Math.max(h*.34,Math.min(h*.87,oy+ph*(.59+.16*depth)))+s*.002*Math.sin(clock*2+i);
-    place(d,x,y,size,depth>0?-1:1,10+Math.round(8*depth))});
+  ducks.forEach((d,i)=>{if(d.hidden||haul?.i===i)return;const entered=arrivals.get(i);
+    const progress=entered===undefined||motion.matches?1:smooth((now-entered)/820);
+    if(progress===1)arrivals.delete(i);
+    const a=i*Math.PI/5+clock*.16-(1-progress)*.44,depth=Math.sin(a),size=Math.max(38,s*(.123+.022*depth)),x=w*.5+Math.min(pw*.38,w*.5-size*.64)*Math.cos(a),y=Math.max(h*.34,Math.min(h*.87,oy+ph*(.59+.16*depth)))+s*.002*Math.sin(clock*2+i);
+    d.style.opacity=.32+.68*progress;place(d,x,y,size,depth>0?-1:1,10+Math.round(8*depth))});
   if(haul)animation(now,w,h);requestAnimationFrame(draw)}
 requestAnimationFrame(draw);
 </script></body></html>
